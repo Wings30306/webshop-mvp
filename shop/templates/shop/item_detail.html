@@ -8,23 +8,10 @@
             <div class="col-md-6 masthead-text">
                 <!-- Item title goes in these h1 tags -->
                 <h1 class="item-title">{{ item.item_name }}</h1>
+                <p class="item-title">{{ item.description | safe }}</p>
             </div>
             <div class="d-none d-md-block col-md-6 masthead-image">
                 <img src="{{ item.featured_image.url }}" class="scale" alt="{{ item.item_name }}">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col card mb-4  mt-3 left  top">
-            <div class="card-body">
-                <!-- The item description goes inside the card-text. -->
-                <!-- Use the | safe filter inside the template tags -->
-                <article class="card-text">
-                    {{ item.description | safe }}
-                </article>
             </div>
         </div>
     </div>
