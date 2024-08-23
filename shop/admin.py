@@ -10,6 +10,6 @@ class ShopItemAdmin():
     fields to prepopulate
     """
 
-    list_display = ('title', 'slug', 'price')
-    search_fields = ['title', 'content']
-    prepopulated_fields = {'slug': ('title',)}
+    list_display = ('item_name', 'price')
+    search_fields = ['item_name', 'description']
+    prepopulated_fields = {'slug': ('item_name',)}
