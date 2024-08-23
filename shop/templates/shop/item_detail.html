@@ -6,9 +6,14 @@
     <div class="container">
         <div class="row g-0">
             <div class="col-md-6 masthead-text">
-                <!-- Item title goes in these h1 tags -->
+                <!-- Item name goes in these h1 tags -->
                 <h1 class="item-title">{{ item.item_name }}</h1>
                 <p class="item-title">{{ item.description | safe }}</p>
+                <p class="item-title text-center">€ {{ item.price|floatformat:2 }}</p>
+                <form action="" class="item-title text-center">
+                    <input type="number" name="amount" id="amount" step="1" min="1" max="10" value="1" class="text-center"><br>
+                    <input type="submit" value="Add to cart" class="btn btn-primary">
+                </form>
             </div>
             <div class="d-none d-md-block col-md-6 masthead-image">
                 <img src="{{ item.featured_image.url }}" class="scale" alt="{{ item.item_name }}">
