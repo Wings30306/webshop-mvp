@@ -1,4 +1,10 @@
 from django.shortcuts import render
+from .contexts import cart_contents
+import stripe
+import env
+import os
+
+stripe.api_key = os.getenv("STRIPE_SECRET")
 
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -25,4 +31,21 @@ def add_to_cart(request, item_id):
 
     request.session['cart'] = cart
     return redirect(view_cart)
-    
+
+def create_checkout_session(request):
+    cart_items_stripe = []
+    for item in cart_contents(request)['cart_items']:
+        print(item)
+        cart_items_stripe.append({'quantity':item['quantity'], 'price':item["price"]})
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=cart_items_stripe,
+            mode='payment',
+            success_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/",
+            cancel_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/",
+        )
+    except Exception as e:
+        print(e)
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
