@@ -33,13 +33,10 @@ def add_to_cart(request, item_id):
     return redirect(view_cart)
 
 def create_checkout_session(request):
-    cart_items_stripe = []
-    for item in cart_contents(request)['cart_items']:
-        print(item)
-        cart_items_stripe.append({'quantity':item['quantity'], 'price':item["price"]})
+    
     try:
         checkout_session = stripe.checkout.Session.create(
-            line_items=cart_items_stripe,
+            line_items=cart_contents(request)['stripe_line_items'],
             mode='payment',
             success_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/",
             cancel_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/",

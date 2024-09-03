@@ -20,11 +20,20 @@ def cart_contents(request):
             'price': item.price,
             'item': item,
         })
+
+        # Set line item data for Stripe
+        stripe_line_items = []
+        stripe_line_items.append({
+            'quantity': item_data,
+            'price': item.stripe_price_id
+        })
+
     
     context = {
         'cart_items': cart_items,
         'total': total,
         'item_count': item_count,
+        'stripe_line_items': stripe_line_items,
     }
 
     return context
