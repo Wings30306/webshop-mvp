@@ -64,6 +64,7 @@
                             </a>
                             <form action="{% url 'create_checkout_session' %}" method="POST">
                                 {% csrf_token %}
+                                {{ form }}
                                 <button type="submit" id="checkout-button" class="btn btn-black rounded-0 btn-lg">
                                     <span class="text-uppercase">Secure Checkout</span>
                                     <span class="icon">

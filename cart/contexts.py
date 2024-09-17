@@ -6,6 +6,7 @@ from shop.models import ShopItem
 def cart_contents(request):
 
     cart_items = []
+    stripe_line_items = []
     total = 0
     item_count = 0
     cart = request.session.get('cart', {})
@@ -22,10 +23,15 @@ def cart_contents(request):
         })
 
         # Set line item data for Stripe
-        stripe_line_items = []
         stripe_line_items.append({
             'quantity': item_data,
-            'price': item.stripe_price_id
+            'price_data': {
+                "currency": "eur",
+                "unit_amount": item.price * 100,
+                "product_data": {
+                    "name": item.item_name,
+                }
+            }
         })
 
     
