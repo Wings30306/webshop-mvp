@@ -3,6 +3,8 @@ from .contexts import cart_contents
 import stripe
 import env
 import os
+from .models import Order, OrderLineItem
+from shop.models import ShopItem
 from .forms import OrderForm
 
 stripe.api_key = os.getenv("STRIPE_SECRET")
@@ -40,21 +42,48 @@ def add_to_cart(request, item_id):
     return redirect(view_cart)
 
 def create_checkout_session(request):
-    
+    """ Create the order in the database and send checkout session object to Stripe """
 
+    # Create checkout session
     try:
+        # Create the order with line items and address
+        order_form = OrderForm(data=request.POST)
+        if order_form.is_valid():
+            order = order_form.save(commit=False)
+            order.save()
+
+            cart = request.session.get('cart', {})
+            print(cart)
+            for item_id in cart.keys():
+                item = ShopItem.objects.get(id=item_id)
+                quantity = cart[item_id]
+                order = Order.objects.get(id=order.id)
+                OrderLineItem.objects.create(item=item, order=order, quantity=quantity)
+
         checkout_session = stripe.checkout.Session.create(
             line_items=cart_contents(request)['stripe_line_items'],
             mode='payment',
-            success_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/cart/checkout-success",
-            cancel_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/cart",
+            success_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/cart/checkout-success/" + str(order.id),
+            cancel_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/cart"
         )
+        print(checkout_session)
+        
     except Exception as e:
         print(e)
         return str(e)
 
     return redirect(checkout_session.url, code=303)
 
-def checkout_success(request):
-    print(request)
-    return redirect(view_cart)
+def checkout_success(request, order_id):
+    """ Display the order confirmation page when payment is successful """
+
+    order = Order.objects.get(id=order_id)
+    # When checkout session is successful, set payment status to True
+    order.order_paid = True
+    order.save()
+
+    request.session["cart"] = {} # Cart is cleared
+
+    # Display order confirmation page
+
+    return redirect(view_cart) # Should show empty cart page at this stage??
