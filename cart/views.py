@@ -22,7 +22,7 @@ def view_cart(request):
     
 
     context = {
-        "form": OrderForm()
+        #"form": OrderForm()
     }
 
     return render(request, 'cart/cart.html', context)
@@ -48,7 +48,7 @@ def create_checkout_session(request):
     ## Code for form validation/saving
 
     ## Send relevant data to Stripe
-    
+
 
 def checkout_success(request, order_id):
     """ Display the order confirmation page when payment is successful """
