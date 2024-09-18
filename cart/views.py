@@ -85,5 +85,9 @@ def checkout_success(request, order_id):
     request.session["cart"] = {} # Cart is cleared
 
     # Display order confirmation page
+    context = {
+        "order": order,
+        "order_total": "TBC",
+    }
 
-    return redirect(view_cart) # Should show empty cart page at this stage??
+    return render(request, 'cart/order_confirmation.html', context) 
