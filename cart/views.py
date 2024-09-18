@@ -67,7 +67,7 @@ def create_checkout_session(request):
             line_items=cart_contents(request)['stripe_line_items'],
             mode='payment',
             success_url=reverse("checkout_success", args=(order_id,)),
-            cancel_url=reverse("cart")
+            cancel_url=reverse("view_cart")
         )
         print(checkout_session)
         
