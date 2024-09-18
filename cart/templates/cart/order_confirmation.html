@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col">Order Confirmation</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="overlay"></div>
+<div class="container mb-2">
+    <div class="row">
+        <div class="col">
+            <h2 class="logo-font mb-4">Thanks for ordering with us!</h2>
+            <p>Below you'll find an overview of your order</p>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Order number: {{ order.id }}</h3>
+            <br>
+            <h4>Delivery Address</h4>
+            <address>
+                {{ order.customer_name }}<br>
+                {{ order.delivery_address_line1 }}<br>
+                {% if order.delivery_address_line2 %}
+                {{ order.delivery_address_line2 }}<br>
+                {% endif %}
+                {{ order.delivery_address_town }}<br>
+                {{ order.delivery_address_postcode }}<br>
+                {% if order.delivery_address_county %}
+                {{ order.delivery_address_county }}<br>
+                {% endif %}
+                {{ order.delivery_address_country}}
+            </address>
+            <h4> Paid: {{ order_total }}</h4>
+        </div>
+        <div class="col-md-6">
+            <h3>Items in this order</h3>
+            {% for item in order.order_line_items.all %}
+            {{ item.item.item_name }} - {{ item.quantity }}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+
+            <a href="{% url 'home' %}" class="btn btn-outline-black rounded-0 btn-lg">
+                <span class="icon">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+                <span class="text-uppercase">Keep Shopping</span>
+            </a>
+
+        </div>
+    </div>
+</div>
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
