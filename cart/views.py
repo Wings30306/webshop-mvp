@@ -62,11 +62,12 @@ def create_checkout_session(request):
                 order = Order.objects.get(id=order.id)
                 OrderLineItem.objects.create(item=item, order=order, quantity=quantity)
 
+        order_id = order.id
         checkout_session = stripe.checkout.Session.create(
             line_items=cart_contents(request)['stripe_line_items'],
             mode='payment',
-            success_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/cart/checkout-success/" + str(order.id),
-            cancel_url="https://8000-wings30306-webshopmvp-7zs4od7kd3m.ws.codeinstitute-ide.net/cart"
+            success_url=reverse("checkout_success", args=(order_id,)),
+            cancel_url=reverse("cart")
         )
         print(checkout_session)
         
