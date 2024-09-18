@@ -7,7 +7,7 @@ if os.path.isfile("env.py"):
 from webshop_mvp import settings
 from .models import Order, OrderLineItem
 from shop.models import ShopItem
-from .forms import OrderForm
+# from .forms import OrderForm
 
 stripe.api_key = os.getenv("STRIPE_SECRET")
 
@@ -45,43 +45,10 @@ def add_to_cart(request, item_id):
 
 def create_checkout_session(request):
     """ Create the order in the database and send checkout session object to Stripe """
+    ## Code for form validation/saving
 
-    # Create checkout session
-    try:
-        # Create the order with line items and address
-        order_form = OrderForm(data=request.POST)
-        if order_form.is_valid():
-            order = order_form.save(commit=False)
-            order.save()
-
-            cart = request.session.get('cart', {})
-            print(cart)
-            for item_id in cart.keys():
-                item = ShopItem.objects.get(id=item_id)
-                quantity = cart[item_id]
-                order = Order.objects.get(id=order.id)
-                OrderLineItem.objects.create(item=item, order=order, quantity=quantity)
-
-        #order_id = order.id
-        """ create and test success and cancel urls """
-        success_url = os.getenv("ROOT_URL") + reverse("checkout_success", args=[order.id])
-        print(success_url)
-        cancel_url = os.getenv("ROOT_URL") + reverse("view_cart")
-        print(cancel_url)
-
-        checkout_session = stripe.checkout.Session.create(
-            line_items=cart_contents(request)['stripe_line_items'],
-            mode='payment',
-            success_url=success_url,
-            cancel_url=cancel_url
-        )
-        print(checkout_session)
-        
-    except Exception as e:
-        print(e)
-        return str(e)
-
-    return redirect(checkout_session.url, code=303)
+    ## Send relevant data to Stripe
+    
 
 def checkout_success(request, order_id):
     """ Display the order confirmation page when payment is successful """

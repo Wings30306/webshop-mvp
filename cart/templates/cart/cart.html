@@ -62,16 +62,8 @@
                                 </span>
                                 <span class="text-uppercase">Keep Shopping</span>
                             </a>
-                            <form action="{% url 'create_checkout_session' %}" method="POST">
-                                {% csrf_token %}
-                                {{ form }}
-                                <button type="submit" id="checkout-button" class="btn btn-black rounded-0 btn-lg">
-                                    <span class="text-uppercase">Secure Checkout</span>
-                                    <span class="icon">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                </button>
-                            </form>
+                            <!-- ADD FORM HERE -->
+                            <!-- NTS: remember CSRF -->
                         </td>
                     </tr>
                 </table>
