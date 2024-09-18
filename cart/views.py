@@ -1,7 +1,8 @@
 from django.shortcuts import render, reverse
 from .contexts import cart_contents
 import stripe
-import env
+if os.path.isfile("env.py"):
+    import env
 import os
 from .models import Order, OrderLineItem
 from shop.models import ShopItem
