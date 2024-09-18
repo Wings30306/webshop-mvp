@@ -4,7 +4,7 @@ import stripe
 import os
 if os.path.isfile("env.py"):
     import env
-
+from webshop_mvp import settings
 from .models import Order, OrderLineItem
 from shop.models import ShopItem
 from .forms import OrderForm
@@ -62,12 +62,18 @@ def create_checkout_session(request):
                 order = Order.objects.get(id=order.id)
                 OrderLineItem.objects.create(item=item, order=order, quantity=quantity)
 
-        order_id = order.id
+        #order_id = order.id
+        """ create and test success and cancel urls """
+        success_url = os.getenv("ROOT_URL") + reverse("checkout_success", args=[order.id])
+        print(success_url)
+        cancel_url = os.getenv("ROOT_URL") + reverse("view_cart")
+        print(cancel_url)
+
         checkout_session = stripe.checkout.Session.create(
             line_items=cart_contents(request)['stripe_line_items'],
             mode='payment',
-            success_url=reverse("checkout_success", args=(order_id,)),
-            cancel_url=reverse("view_cart")
+            success_url=success_url,
+            cancel_url=cancel_url
         )
         print(checkout_session)
         
