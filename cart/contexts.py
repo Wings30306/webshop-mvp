@@ -22,24 +22,24 @@ def cart_contents(request):
             'item': item,
         })
 
-        # # Set line item data for Stripe
-        # stripe_line_items.append({
-        #     'quantity': item_data,
-        #     'price_data': {
-        #         "currency": "eur",
-        #         "unit_amount": item.price * 100,
-        #         "product_data": {
-        #             "name": item.item_name,
-        #         }
-        #     }
-        # })
+        # Set line item data for Stripe
+        stripe_line_items.append({
+            'quantity': item_data,
+            'price_data': {
+                "currency": "eur",
+                "unit_amount": item.price * 100,
+                "product_data": {
+                    "name": item.item_name,
+                }
+            }
+        })
 
     
     context = {
         'cart_items': cart_items,
         'total': total,
         'item_count': item_count,
-        #'stripe_line_items': stripe_line_items,
+        'stripe_line_items': stripe_line_items,
     }
 
     return context

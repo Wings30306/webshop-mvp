@@ -62,11 +62,15 @@
                                 </span>
                                 <span class="text-uppercase">Keep Shopping</span>
                             </a>
-                            <!-- ADD FORM HERE -->
-                            <!-- NTS: remember CSRF -->
                         </td>
                     </tr>
                 </table>
+            </div>
+            <!-- ADD FORM HERE -->
+            <!-- NTS: remember CSRF -->
+            {% csrf_token %}
+            <div id="checkout">
+                <!-- Checkout will insert the payment form here -->
             </div>
             {% else %}
             <p class="lead mb-5">Your bag is empty.</p>
@@ -81,4 +85,9 @@
     </div>
 </div>
 <script src="https://js.stripe.com/v3/"></script>
+<script>
+    // Pass in your Stripe Publishable key from context here
+    const stripePK = "{{ stripe_publ_key }}"
+</script>
+<script src="{% static 'js/checkout.js' %}" defer></script>
 {% endblock %}
