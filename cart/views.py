@@ -89,6 +89,7 @@ def session_status(request, SESSION_ID):
 
     return JsonResponse({"status": session.status, "customer_email": session.customer_details.email})
 
+
 def return_view(request, CHECKOUT_SESSION_ID):
     context = {
         "session_id": CHECKOUT_SESSION_ID
