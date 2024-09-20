@@ -26,24 +26,26 @@
             <h4>Delivery Address</h4>
             <address>
                 {{ order.customer_name }}<br>
-                {{ order.delivery_address_line1 }}<br>
-                {% if order.delivery_address_line2 %}
-                {{ order.delivery_address_line2 }}<br>
+                {{ order.shipping_line1 }}<br>
+                {% if order.shipping_line2 %}
+                {{ order.shipping_line2 }}<br>
                 {% endif %}
-                {{ order.delivery_address_town }}<br>
-                {{ order.delivery_address_postcode }}<br>
-                {% if order.delivery_address_county %}
-                {{ order.delivery_address_county }}<br>
+                {{ order.shipping_town_or_city }}<br>
+                {{ order.shipping_postal_code }}<br>
+                {% if order.shipping_county %}
+                {{ order.shipping_county }}<br>
                 {% endif %}
-                {{ order.delivery_address_country}}
+                {{ order.shipping_country}}
             </address>
             <h4> Paid: {{ order_total }}</h4>
         </div>
         <div class="col-md-6">
             <h3>Items in this order</h3>
-            {% for item in order.order_line_items.all %}
-            {{ item.item.item_name }} - {{ item.quantity }}
-            {% endfor %}
+            <ul>
+                {% for item in order.order_line_items.all %}
+                <li>{{ item.item.item_name }} - {{ item.quantity }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     <div class="row">
